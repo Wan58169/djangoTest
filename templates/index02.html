@@ -1,0 +1,958 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        
+        li {
+            list-style: none;
+        }
+        
+        body {
+            background: url(static/images/bg.jpg) no-repeat top center;
+            line-height: 1.15;
+        }
+        
+        @font-face {
+            font-family: electronicFont;
+            src: url(static/font/DS-DIGIT.TTF);
+        }
+        
+        header {
+            height: 1.25rem;
+            background: url(static/images/head_bg.png) no-repeat;
+            background-size: 100% 100%;
+        }
+        
+        header h1 {
+            font-size: .475rem;
+            color: rgb(255, 255, 255, 0.87);
+            text-align: center;
+            line-height: 1rem;
+        }
+        
+        .showTime {
+            position: absolute;
+            top: 30px;
+            right: 0.375rem;
+            line-height: 0.9375rem;
+            color: rgb(255, 255, 255, 0.7);
+            font-size: 0.25rem;
+        }
+        
+        .mainBox {
+            display: flex;
+            margin: 0px auto;
+            padding: 0.125rem 0.125rem 0;
+        }
+        
+        .column {
+            flex: 3;
+        }
+        
+        .column:nth-child(2) {
+            flex: 5;
+        }
+        
+        .panel {
+            position: relative;
+            height: 3.875rem;
+            border: 1px solid;
+            background: url(static/images/line.png) rgba(255, 255, 255, 0.04);
+            padding: 0 0.1875rem 0.5rem;
+            margin-bottom: 0.1875rem;
+        }
+        
+        .panel h2 {
+            height: 0.6rem;
+            color: #fff;
+            /* line-height: 0.6rem; */
+            text-align: center;
+            font-size: 0.25rem;
+            font-weight: 400;
+        }
+        
+        .panel .chart {
+            width: 6.8rem;
+            height: 2.5rem;
+            /*background-color: pink;*/
+        }
+        
+        .panel::before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 10px;
+            height: 10px;
+            border-left: 2px solid #02a6b5;
+            border-top: 2px solid #02a6b5;
+            content: '';
+        }
+        
+        .panel::after {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            border-right: 2px solid #02a6b5;
+            border-bottom: 2px solid #02a6b5;
+            content: '';
+        }
+        
+        .no {
+            background-color: rgba(101, 132, 226, 0.1);
+            padding: 0.1875rem;
+        }
+        
+        .no-hd {
+            position: relative;
+            border: 1px solid rgba(25, 186, 139, 0.17);
+        }
+        
+        .no-hd::before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0.375rem;
+            height: 0.125rem;
+            border-top: 2px solid #02a6b5;
+            border-left: 2px solid #02a6b5;
+            content: '';
+        }
+        
+        .no-hd::after {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0.375rem;
+            height: 0.125rem;
+            border-bottom: 2px solid #02a6b5;
+            border-right: 2px solid #02a6b5;
+            content: '';
+        }
+        
+        .nd-hd h1 {
+            flex: 1;
+            line-height: 1rem;
+            font-size: 0.875rem;
+            color: #ffeb7b;
+            text-align: center;
+            font-family: electronicFont;
+        }
+        
+        .no-hd ul {
+            display: flex;
+        }
+        
+        .no-hd ul li {
+            flex: 1;
+            line-height: 1rem;
+            font-size: 0.875rem;
+            color: #ffeb7b;
+            text-align: center;
+            font-family: electronicFont;
+        }
+        
+        .no-bd ul {
+            display: flex;
+        }
+        
+        .no-bd ul li {
+            flex: 1;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.225rem;
+            height: 0.5rem;
+            line-height: 0.5rem;
+            padding-top: 0.125rem;
+        }
+        
+        .map {
+            height: 10.125rem;
+            /* background: pink; */
+            position: relative;
+        }
+        
+        .map1 {
+            width: 6.475rem;
+            height: 6.475rem;
+            top: 50%;
+            left: 50%;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            background: url(static/images/map.png);
+            background-size: 100% 100%;
+            opacity: 0.3;
+        }
+        
+        .map2 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8.0375rem;
+            height: 8.0375rem;
+            background: url(static/images/lbx.png);
+            background-size: 100% 100%;
+            animation: rotate1 15s linear infinite;
+            opacity: 0.6;
+        }
+        
+        .map3 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 7.075rem;
+            height: 7.075rem;
+            background: url(static/images/jt.png);
+            background-size: 100% 100%;
+            animation: rotate2 10s linear infinite;
+            opacity: 0.6;
+        }
+        
+        .map .chart {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 10.125rem;
+            width: 100%;
+            border: 1px solid #cccccc;
+            border-radius: 10px;
+            box-shadow: 0 0 5px #cccccc;
+            opacity: 0.6;
+            /*background: pink;*/
+        }
+        
+        @keyframes rotate1 {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+        
+        @keyframes rotate2 {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            to {
+                transform: translate(-50%, -50%) rotate(-360deg);
+            }
+        }
+        /* 约束屏幕尺寸 */
+        
+        @media screen and (max-width: 1024px) {
+            html {
+                font-size: 42px !important;
+            }
+        }
+        
+        @media screen and (min-width: 1920px) {
+            html {
+                font-size: 80px !important;
+            }
+        }
+    </style>
+
+    <title>Echarts</title>
+    <script src="static/js/flexible.js"></script>
+    <script src="static/js/china.js"></script>
+    <!-- 引入 echarts.js -->
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+    <!-- 高德地图 -->
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+    <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
+    <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+    <script src="https://webapi.amap.com/js/marker.js"></script>
+    <script type="text/javascript" src="https://webapi.amap.com/demos/js/liteToolbar.js"></script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=69390ef11e7e5a882903e0b646772527&plugin=AMap.Driving,AMap.Geocoder,AMap.TruckDriving,AMap.Autocomplete,AMap.Autocomplete">
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1>基于城市人口流动的垃圾用地部署建模及应用</h1>
+        <div class="showTime"></div>
+        <script>
+            var t = null;
+            t = setTimeout(time, 1000); //开始运行
+            function time() {
+                clearTimeout(t); //清除定时器
+                dt = new Date();
+                var y = dt.getFullYear();
+                var mt = dt.getMonth() + 1;
+                var day = dt.getDate();
+                var h = dt.getHours(); //获取时
+                var m = dt.getMinutes(); //获取分
+                var s = dt.getSeconds(); //获取秒
+                document.querySelector(".showTime").innerHTML =
+                    "当前时间：" +
+                    y +
+                    "年" +
+                    mt +
+                    "月" +
+                    day +
+                    "日-" +
+                    h +
+                    "时" +
+                    m +
+                    "分" +
+                    s +
+                    "秒";
+                t = setTimeout(time, 1000); //设定定时器，循环运行
+            }
+        </script>
+    </header>
+
+    <section class="mainBox">
+        <div class="column">
+            <div class="panel bar">
+                <h2>总人口分布图</h2>
+                <div class="chart" id="chart11">图表</div>
+                <script>
+                    (function() {
+                        var myChart = echarts.init(document.getElementById("chart11"));
+                        var option = {
+                            color: ['#2f89cf'],
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                                    type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                                }
+                            },
+                            grid: {
+                                left: '0%',
+                                right: '0%',
+                                top: '10px',
+                                bottom: '4%',
+                                containLabel: true
+                            },
+                            xAxis: [{
+                                type: 'category',
+                                data: ['2014', '2015', '2016', '2017', '2018', '2019', '2020'],
+                                axisTick: {
+                                    alignWithLabel: true
+                                },
+                                axisLabel: {
+                                    color: "rgba(255, 255, 255, 0.6)",
+                                    fontSize: "12"
+                                },
+                                axisLine: {
+                                    show: false
+                                }
+                            }],
+                            yAxis: [{
+                                type: 'value',
+                                axisLabel: {
+                                    color: "rgba(255, 255, 255, 0.6)",
+                                    fontSize: "12"
+                                },
+                                axisLine: {
+                                    lineStyle: {
+                                        color: "rgba(255, 255, 255, 0.1)",
+                                        width: 2
+                                    }
+                                },
+                                splitLine: {
+                                    lineStyle: {
+                                        color: "rgba(255, 255, 255, 0.1)"
+                                    }
+                                }
+                            }],
+                            series: [{
+                                name: '人口总量',
+                                type: 'bar',
+                                barWidth: '40%',
+                                data: [10, 52, 200, 334, 390, 330, 220],
+                                itemStyle: {
+                                    barBorderRadius: 5
+                                }
+                            }]
+
+                        };
+                        myChart.setOption(option);
+                        window.addEventListener("resize", function() {
+                            myChart.resize();
+                        });
+                    })();
+                </script>
+            </div>
+            <div class="panel bar1">
+                <h2>各社区人口分布图
+                    <a class="a-active" href="javascript:;">2019</a>
+                    <a href="javascript:;">2020</a>
+                </h2>
+                <div class="chart" id="chart21"></div>
+                <script>
+                    (function() {
+                        var myChart = echarts.init(document.getElementById("chart21"));
+                        // 年份对应数据
+                        var yearData = [{
+                            year: "2019", // 年份
+                            data: [
+                                [70, 34, 60, 78, 69]
+                            ]
+                        }, {
+                            year: "2020", // 年份
+                            data: [
+                                [65, 40, 56, 80, 72]
+                            ]
+                        }];
+                        // 声明颜色数组
+                        var myColor = ["#1089E7", "#F57474", "#56D0E3", "#F8B448", "#8B78F6"];
+                        var option = {
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                }
+                            },
+                            grid: {
+                                top: '0%',
+                                left: '22%',
+                                bottom: '10%',
+                                /*containLabel: true*/
+                            },
+                            xAxis: {
+                                show: false
+                            },
+                            yAxis: [{
+                                type: 'category',
+                                data: ['栖霞区', '玄武区', '秦淮区', '鼓楼区', '江宁区'],
+                                axisLine: {
+                                    show: false
+                                },
+                                axisTick: {
+                                    show: false
+                                },
+                                axisLabel: {
+                                    color: "#fff"
+                                }
+                            }, {
+                                type: 'category',
+                                data: [702, 350, 610, 793, 664],
+                                axisLine: {
+                                    show: false
+                                },
+                                axisTick: {
+                                    show: false
+                                },
+                                axisLabel: {
+                                    color: "#fff"
+                                }
+                            }],
+                            series: [{
+                                    name: '条',
+                                    type: 'bar',
+                                    data: [70, 34, 60, 78, 69],
+                                    itemStyle: {
+                                        barBorderRadius: 20,
+                                        color: function(params) {
+                                            return myColor[params.dataIndex];
+                                        }
+                                    },
+                                    barCategoryGap: 50,
+                                    barWidth: 10,
+                                    yAxisIndex: 0,
+                                    label: {
+                                        show: true,
+                                        position: "inside",
+                                        formatter: "{c}%"
+                                    }
+                                },
+
+                                {
+                                    name: '框',
+                                    type: 'bar',
+                                    data: [100, 100, 100, 100, 100],
+                                    barCategoryGap: 50,
+                                    barWidth: 14,
+                                    yAxisIndex: 1,
+                                    itemStyle: {
+                                        color: "none",
+                                        borderColor: "#00c1de",
+                                        borderWidth: 2,
+                                        barBorderRadius: 15
+                                    }
+                                }
+                            ]
+                        };
+
+                        myChart.setOption(option);
+                        window.addEventListener('resize', function() {
+                            myChart.resize();
+                        });
+                        // 5.点击切换2019 和 2020 的数据
+                        $('.bar1 h2 a').on('click', function() {
+                            // console.log($(this).index());
+                            // 点击a 之后 根据当前a的索引号 找到对应的 yearData 相关对象
+                            // console.log(yearData[$(this).index()]);
+                            var obj = yearData[$(this).index()];
+                            option.series[0].data = obj.data[0];
+                            /*option.series[1].data = obj.data[1];*/
+                            // 选中年份高亮
+                            $('.bar1 h2 a').removeClass('a-active');
+                            $(this).addClass('a-active');
+
+                            // 需要重新渲染
+                            myChart.setOption(option);
+                        })
+                    })();
+                </script>
+            </div>
+            <div class="panel pie">
+                <h2>人口分类图</h2>
+                <div class="chart" id="chart31"></div>
+                <script>
+                    (function() {
+                        var myChart = echarts.init(document.getElementById("chart31"));
+                        var option = {
+                            color: ["#1089E7", "#F57474", "#56D0E3"],
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: '{a} <br/>{b}: {c} ({d}%)'
+                            },
+                            legend: {
+                                bottom: '0%',
+                                itemWidth: 10,
+                                itemHeight: 10,
+                                textStyle: {
+                                    color: "rgba(255, 255, 255, 0.5)",
+                                    fontSize: "12"
+                                }
+                            },
+                            series: [{
+                                name: '人口分类',
+                                type: 'pie',
+                                radius: ['40%', '60%'],
+                                center: ['50%', '35%'],
+                                avoidLabelOverlap: false,
+                                label: {
+                                    show: false,
+                                    // position: 'center'
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: false,
+                                        fontSize: '10',
+                                        fontWeight: 'bold'
+                                    }
+                                },
+                                labelLine: {
+                                    show: false
+                                },
+                                data: [{
+                                    value: 7,
+                                    name: "常住人口"
+                                }, {
+                                    value: 2.5,
+                                    name: "流动人口"
+                                }, {
+                                    value: 0.5,
+                                    name: "其他"
+                                }]
+                            }]
+                        };
+                        myChart.setOption(option);
+                        window.addEventListener('resize', function() {
+                            myChart.resize();
+                        });
+                    })();
+                </script>
+            </div>
+        </div>
+        <div class="column">
+            <div class="no">
+                <div class="no-hd">
+                    <!-- <ul>
+                        <li>123406</li>
+                        <li>123456</li>
+                    </ul> -->
+                    <h1 style="font-size: 0.7rem;
+                    color: #ffeb7b;
+                    text-align: center;">社区地图</h1>
+                </div>
+                <div class="no-bd">
+                    <!-- <ul>
+                        <li>前端需求人数</li>
+                        <li>市场供应人数</li>
+                    </ul> -->
+                </div>
+            </div>
+            <div class="map">
+                <div class="map1"></div>
+                <div class="map2"></div>
+                <div class="map3"></div>
+                <div class="chart" id="chart12">
+                </div>
+                <script>
+                    //定义初始经纬度
+                    var mylgt = 119.111284;
+                    var mylat = 33.617217;
+                    //基本地图加载
+                    var map = new AMap.Map('chart12', {
+                        resizeEnable: true,
+                        center: [mylgt, mylat], //地图中心点
+                        zoom: 13 //地图显示的缩放级别
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="column">
+            <div class="panel bar">
+                <h2>垃圾变化总量</h2>
+                <div class="chart" id="chart13">图表</div>
+                <script>
+                    (function() {
+                        var myChart = echarts.init(document.getElementById("chart13"));
+                        var option = {
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'cross',
+                                    label: {
+                                        backgroundColor: '#6a7985'
+                                    }
+                                }
+                            },
+                            legend: {
+                                top: "0",
+                                textStyle: {
+                                    color: "rgba(255, 255, 255, 0.5)",
+                                    fontSize: "12"
+                                }
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '0%',
+                                top: '30%',
+                                containLabel: true
+                            },
+                            xAxis: [{
+                                type: 'category',
+                                boundaryGap: false,
+                                data: ['2014', '2015', '2016', '2017', '2018', '2019', '2020'],
+                                axisLabel: {
+                                    textStyle: {
+                                        color: "rgba(255, 255, 255, 0.6)",
+                                        fontSize: "12"
+                                    }
+                                },
+                                axisLine: {
+                                    lineStyle: {
+                                        color: "rgba(255,255,255,.2)"
+                                    }
+                                }
+                            }],
+                            yAxis: [{
+                                type: 'value',
+                                axisTick: {
+                                    // 不显示刻度线
+                                    show: false
+                                },
+                                axisLine: {
+                                    lineStyle: {
+                                        color: "rgba(255,255,255,.1)"
+                                    }
+                                },
+                                axisLabel: {
+                                    textStyle: {
+                                        color: "rgba(255,255,255,.6)",
+                                        fontSize: 12
+                                    }
+                                },
+                                // 修改分割线的颜色
+                                splitLine: {
+                                    lineStyle: {
+                                        color: "rgba(255,255,255,.1)"
+                                    }
+                                }
+                            }],
+                            series: [{
+                                name: '预测值',
+                                type: 'line',
+                                areaStyle: {},
+                                smooth: true,
+                                data: [30, 40, 30, 40, 30, 40, 30, 60, 20, 40, 30, 40, 30, 40, 30, 40, 30, 60, 20, 40, 30, 40, 30, 40, 30, 40, 20, 60, 50, 40],
+                                // 单独修改当前线条的样式
+                                lineStyle: {
+                                    color: "#0184d5",
+                                    width: 2
+                                },
+                                // 填充区域渐变透明颜色
+                                areaStyle: {
+                                    color: new echarts.graphic.LinearGradient(
+                                        0,
+                                        0,
+                                        0,
+                                        1, [{
+                                            offset: 0,
+                                            color: "rgba(1, 132, 213, 0.4)" // 渐变色的起始颜色
+                                        }, {
+                                            offset: 0.8,
+                                            color: "rgba(1, 132, 213, 0.1)" // 渐变线的结束颜色
+                                        }],
+                                        false
+                                    ),
+                                    shadowColor: "rgba(0, 0, 0, 0.1)"
+                                },
+                                // 拐点设置为小圆点
+                                symbol: 'circle',
+                                // 设置拐点大小
+                                symbolSize: 5,
+                                // 开始不显示拐点， 鼠标经过显示
+                                showSymbol: false,
+                                // 设置拐点颜色以及边框
+                                itemStyle: {
+                                    color: "#0184d5",
+                                    borderColor: "rgba(221, 220, 107, .1)",
+                                    borderWidth: 12
+                                }
+                            }, {
+                                name: "真实值",
+                                type: "line",
+                                smooth: true,
+                                lineStyle: {
+                                    normal: {
+                                        color: "#00d887",
+                                        width: 2
+                                    }
+                                },
+                                areaStyle: {
+                                    normal: {
+                                        color: new echarts.graphic.LinearGradient(
+                                            0,
+                                            0,
+                                            0,
+                                            1, [{
+                                                offset: 0,
+                                                color: "rgba(0, 216, 135, 0.4)"
+                                            }, {
+                                                offset: 0.8,
+                                                color: "rgba(0, 216, 135, 0.1)"
+                                            }],
+                                            false
+                                        ),
+                                        shadowColor: "rgba(0, 0, 0, 0.1)"
+                                    }
+                                },
+                                // 设置拐点 小圆点
+                                symbol: "circle",
+                                // 拐点大小
+                                symbolSize: 5,
+                                // 设置拐点颜色以及边框
+                                itemStyle: {
+                                    color: "#00d887",
+                                    borderColor: "rgba(221, 220, 107, .1)",
+                                    borderWidth: 12
+                                },
+                                // 开始不显示拐点， 鼠标经过显示
+                                showSymbol: false,
+                                data: [130, 10, 20, 40, 30, 40, 80, 60, 20, 40, 90, 40, 20, 140, 30, 40, 130, 20, 20, 40, 80, 70, 30, 40, 30, 120, 20, 99, 50, 20],
+                            }]
+                        };
+                        myChart.setOption(option);
+                        window.addEventListener('resize', function() {
+                            myChart.resize();
+                        });
+                    })();
+                </script>
+            </div>
+            <div class="panel bar2">
+                <h2>各社区垃圾量图
+                    <a class="a-active" href="javascript:;">2019</a>
+                    <a href="javascript:;">2020</a>
+                </h2>
+                <div class="chart" id="chart23"></div>
+                <script>
+                    (function() {
+                        var myChart = echarts.init(document.getElementById("chart23"));
+                        // 年份对应数据
+                        var yearData = [{
+                            year: "2019", // 年份
+                            data: [
+                                [70, 34, 60, 78, 69]
+                            ]
+                        }, {
+                            year: "2020", // 年份
+                            data: [
+                                [65, 40, 56, 80, 72]
+                            ]
+                        }];
+                        // 声明颜色数组
+                        var myColor = ["#1089E7", "#F57474", "#56D0E3", "#F8B448", "#8B78F6"];
+                        var option = {
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                }
+                            },
+                            grid: {
+                                top: '0%',
+                                left: '22%',
+                                bottom: '10%',
+                                /*containLabel: true*/
+                            },
+                            xAxis: {
+                                show: false
+                            },
+                            yAxis: [{
+                                type: 'category',
+                                data: ['栖霞区', '玄武区', '秦淮区', '鼓楼区', '江宁区'],
+                                axisLine: {
+                                    show: false
+                                },
+                                axisTick: {
+                                    show: false
+                                },
+                                axisLabel: {
+                                    color: "#fff"
+                                }
+                            }, {
+                                type: 'category',
+                                data: ['35', '30', '60', '50', '30'],
+                                axisLine: {
+                                    show: false
+                                },
+                                axisTick: {
+                                    show: false
+                                },
+                                axisLabel: {
+                                    color: "#fff"
+                                }
+                            }],
+                            series: [{
+                                name: '条',
+                                type: 'bar',
+                                data: [70, 34, 60, 78, 69],
+                                itemStyle: {
+                                    barBorderRadius: 20,
+                                    color: function(params) {
+                                        return myColor[params.dataIndex];
+                                    }
+                                },
+                                barCategoryGap: 50,
+                                barWidth: 10,
+                                yAxisIndex: 0,
+                                label: {
+                                    show: true,
+                                    position: "inside",
+                                    formatter: "{c}%"
+                                }
+                            }, {
+                                name: '框',
+                                type: 'bar',
+                                data: [100, 100, 100, 100, 100],
+                                barCategoryGap: 50,
+                                barWidth: 14,
+                                yAxisIndex: 1,
+                                itemStyle: {
+                                    color: "none",
+                                    borderColor: "#00c1de",
+                                    borderWidth: 2,
+                                    barBorderRadius: 15
+                                }
+                            }]
+                        };
+                        myChart.setOption(option);
+                        window.addEventListener('resize', function() {
+                            myChart.resize();
+                        });
+
+                        // 5.点击切换2019 和 2020 的数据
+                        $('.bar2 h2 a').on('click', function() {
+                            // console.log($(this).index());
+                            // 点击a 之后 根据当前a的索引号 找到对应的 yearData 相关对象
+                            // console.log(yearData[$(this).index()]);
+                            var obj = yearData[$(this).index()];
+                            option.series[0].data = obj.data[0];
+                            /*option.series[1].data = obj.data[1];*/
+                            // 选中年份高亮
+                            $('.bar2 h2 a').removeClass('a-active');
+                            $(this).addClass('a-active');
+
+                            // 需要重新渲染
+                            myChart.setOption(option);
+                        })
+                    })();
+                </script>
+            </div>
+            <div class="panel pie">
+                <h2>垃圾分类图</h2>
+                <div class="chart" id="chart33"></div>
+                <script>
+                    (function() {
+                        var myChart = echarts.init(document.getElementById("chart33"));
+                        var option = {
+                            color: ['#60cda0', '#ed8884', '#ff9f7f', '#0096ff'],
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: '{a} <br/>{b} : {c} ({d}%)'
+                            },
+                            legend: {
+                                bottom: "0%",
+                                itemWidth: 10,
+                                itemHeight: 10,
+                                textStyle: {
+                                    color: "rgba(255, 255, 255, 0.5)",
+                                    fontSize: "12"
+                                }
+                            },
+                            series: [{
+                                name: '垃圾分类',
+                                type: 'pie',
+                                radius: ['10%', '70%'],
+                                center: ['50%', '35%'],
+                                roseType: 'radius',
+                                label: {
+                                    fontSize: 10
+                                },
+                                labelLine: {
+                                    length: 6,
+                                    length2: 8
+                                },
+                                data: [{
+                                    value: 30,
+                                    name: '干垃圾'
+                                }, {
+                                    value: 30,
+                                    name: '湿垃圾'
+                                }, {
+                                    value: 20,
+                                    name: '可回收物'
+                                }, {
+                                    value: 20,
+                                    name: '有害垃圾'
+                                }]
+                            }]
+                        };
+                        myChart.setOption(option);
+                        window.addEventListener('resize', function() {
+                            myChart.resize();
+                        });
+                    })();
+                </script>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

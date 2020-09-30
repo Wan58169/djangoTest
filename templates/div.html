@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <!-- <link rel="stylesheet" type="text/css" href="\templates\mycss.css"> -->
+    <title>div</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+        
+        #nav {
+            width: 100%;
+            height: 50px;
+            background-color: black;
+        }
+        
+        #nav_content {
+            width: 75%;
+            height: 50px;
+            margin: 0px auto;
+            background-color: blueviolet;
+        }
+        
+        #body {
+            width: 75%;
+            height: 900px;
+            margin: 20px auto;
+            background-color: beige;
+        }
+        
+        #body_img {
+            width: 100%;
+            height: 40%;
+            margin: 0px auto;
+            background-color: chartreuse;
+        }
+        
+        #body_content {
+            width: 100%;
+            height: 60%;
+            margin: 0px auto;
+            background-color: darkgoldenrod;
+        }
+        
+        #nav_ul {
+            list-style-type: none;
+            margin: 0px;
+            padding: 0px;
+            width: 200px;
+            text-align: center;
+        }
+        
+        a:link,
+        a:visited {
+            text-decoration: none;
+            background-color: blanchedalmond;
+            text-align: center;
+        }
+        
+        a:hover,
+        a:active {
+            background-color: coral;
+        }
+        
+        #nav_ul_li1,
+        #nav_ul_li2 {
+            display: inline;
+            padding: 3px;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="nav">
+        <div id="nav_content">
+            <ul id="nav_ul">
+                <li id="nav_ul_li1"><a href="#">导航1</li>
+                <li id="nav_ul_li2"><a href="#">导航2</li>
+            </ul>
+        </div>
+    </div>
+    <div id="body">
+        <div id="body_img"></div>
+        <div id="body_content"></div>
+    </div>
+</body>
+
+</html>
