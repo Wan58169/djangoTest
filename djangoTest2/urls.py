@@ -19,4 +19,11 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('myApp.urls')),
+    path('refresh11/', include('myApp.urls')),
+    path('refresh13/', include('myApp.urls')),
+    path('refresh21/', include('myApp.urls')),
+    path('refresh23/', include('myApp.urls')),
+    path('refresh31/', include('myApp.urls')),
+    path('refresh33/', include('myApp.urls')),
+    path('map/', include('myApp.urls'))
 ]

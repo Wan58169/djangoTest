@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <!--  新 Bootstrap 核心 CSS 文件 -->
     <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
@@ -22,7 +22,7 @@
         }
         
         body {
-            background: url(static/images/bg.jpg) no-repeat top center;
+            background: url(static/images/bg.jpg);
             line-height: 1.15;
         }
         
@@ -324,114 +324,153 @@
         <div class="column">
             <div class="panel bar">
                 <h2>总人口分布图</h2>
-                <div class="chart" id="chart11">图表</div>
+                <button onclick="f11()">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                        </button>
+
                 <script>
-                    (function() {
-                        var myChart = echarts.init(document.getElementById("chart11"));
-                        var option = {
-                            color: ['#2f89cf'],
-                            tooltip: {
-                                trigger: 'axis',
-                                axisPointer: { // 坐标轴指示器，坐标轴触发有效
-                                    type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-                                }
+                    var data11 = [100, 200, 200, 334, 390, 330, 220];
+
+                    function f11() {
+                        $.ajax({
+                            method: "post",
+                            url: "/refresh11/",
+                            dataType: "json",
+                            data: {
+                                myString: "hello"
                             },
-                            grid: {
-                                left: '0%',
-                                right: '0%',
-                                top: '10px',
-                                bottom: '4%',
-                                containLabel: true
-                            },
-                            xAxis: [{
-                                type: 'category',
-                                data: ['2014', '2015', '2016', '2017', '2018', '2019', '2020'],
-                                axisTick: {
-                                    alignWithLabel: true
-                                },
-                                axisLabel: {
-                                    color: "rgba(255, 255, 255, 0.6)",
-                                    fontSize: "12"
-                                },
-                                axisLine: {
-                                    show: false
-                                }
-                            }],
-                            yAxis: [{
-                                type: 'value',
-                                axisLabel: {
-                                    color: "rgba(255, 255, 255, 0.6)",
-                                    fontSize: "12"
-                                },
-                                axisLine: {
-                                    lineStyle: {
-                                        color: "rgba(255, 255, 255, 0.1)",
-                                        width: 2
-                                    }
-                                },
-                                splitLine: {
-                                    lineStyle: {
-                                        color: "rgba(255, 255, 255, 0.1)"
-                                    }
-                                }
-                            }],
+                            success: function(data) {
+                                // console.log(data.message);
+                                refresh_data11(data.message);
+                            }
+                        });
+                    }
+
+                    function refresh_data11(data) {
+                        data11 = [];
+                        for (idx in data) {
+                            console.log(data[idx][1]);
+                            data11.push(data[idx][1]);
+                        }
+                        chart11.setOption({
                             series: [{
                                 name: '人口总量',
                                 type: 'bar',
                                 barWidth: '40%',
-                                data: [10, 52, 200, 334, 390, 330, 220],
+                                // data: [10, 52, 200, 334, 390, 330, 220],
+                                data: data11,
                                 itemStyle: {
                                     barBorderRadius: 5
                                 }
                             }]
-
-                        };
-                        myChart.setOption(option);
-                        window.addEventListener("resize", function() {
-                            myChart.resize();
                         });
-                    })();
+                    }
+                </script>
+                <div class="chart" id="chart11">图表</div>
+                <script>
+                    var chart11 = echarts.init(document.getElementById("chart11"));
+                    var option = {
+                        color: ['#2f89cf'],
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                                type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                            }
+                        },
+                        grid: {
+                            left: '0%',
+                            right: '0%',
+                            top: '15%',
+                            bottom: '4%',
+                            containLabel: true
+                        },
+                        xAxis: [{
+                            type: 'category',
+                            data: ['2014', '2015', '2016', '2017', '2018', '2019', '2020'],
+                            axisTick: {
+                                alignWithLabel: true
+                            },
+                            axisLabel: {
+                                color: "rgba(255, 255, 255, 0.6)",
+                                fontSize: "12"
+                            },
+                            axisLine: {
+                                show: false
+                            }
+                        }],
+                        yAxis: [{
+                            type: 'value',
+                            axisLabel: {
+                                color: "rgba(255, 255, 255, 0.6)",
+                                fontSize: "12"
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: "rgba(255, 255, 255, 0.1)",
+                                    width: 2
+                                }
+                            },
+                            splitLine: {
+                                lineStyle: {
+                                    color: "rgba(255, 255, 255, 0.1)"
+                                }
+                            }
+                        }],
+                        series: [{
+                            name: '人口总量',
+                            type: 'bar',
+                            barWidth: '40%',
+                            // data: [10, 52, 200, 334, 390, 330, 220],
+                            data: data11,
+                            itemStyle: {
+                                barBorderRadius: 5
+                            }
+                        }]
+
+                    };
+                    chart11.setOption(option);
+                    window.addEventListener("resize", function() {
+                        chart11.resize();
+                    });
                 </script>
             </div>
+
             <div class="panel bar1">
                 <h2>各社区人口分布图
                     <a class="a-active" href="javascript:;">2019</a>
                     <a href="javascript:;">2020</a>
                 </h2>
-                <div class="chart" id="chart21"></div>
+                <button onclick="f21()">
+                    <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
                 <script>
-                    (function() {
-                        var myChart = echarts.init(document.getElementById("chart21"));
-                        // 年份对应数据
-                        var yearData = [{
-                            year: "2019", // 年份
-                            data: [
-                                [70, 34, 60, 78, 69]
-                            ]
-                        }, {
-                            year: "2020", // 年份
-                            data: [
-                                [65, 40, 56, 80, 72]
-                            ]
-                        }];
-                        // 声明颜色数组
-                        var myColor = ["#1089E7", "#F57474", "#56D0E3", "#F8B448", "#8B78F6"];
-                        var option = {
-                            tooltip: {
-                                trigger: 'axis',
-                                axisPointer: {
-                                    type: 'shadow'
-                                }
+                    var data21Percent = [70, 34, 60, 78, 69];
+                    var data21Total = [702, 350, 610, 793, 664];
+
+                    function f21() {
+                        $.ajax({
+                            method: "post",
+                            url: "/refresh21/",
+                            dataType: "json",
+                            data: {
+                                myString: "hello"
                             },
-                            grid: {
-                                top: '0%',
-                                left: '22%',
-                                bottom: '10%',
-                                /*containLabel: true*/
-                            },
-                            xAxis: {
-                                show: false
-                            },
+                            success: function(data) {
+                                console.log(data.message);
+                                refresh_data21(data.message);
+                            }
+                        });
+                    }
+
+                    function refresh_data21(data) {
+                        data21Percent = [];
+                        data21Total = [];
+                        for (idx in data) {
+                            console.log(data[idx][0] + " " + data[idx][1]);
+                            data21Percent.push(data[idx][0]);
+                            data21Total.push(data[idx][1]);
+                        }
+                        chart21.setOption({
                             yAxis: [{
                                 type: 'category',
                                 data: ['栖霞区', '玄武区', '秦淮区', '鼓楼区', '江宁区'],
@@ -446,7 +485,8 @@
                                 }
                             }, {
                                 type: 'category',
-                                data: [702, 350, 610, 793, 664],
+                                // data: [702, 350, 610, 793, 664],
+                                data: data21Total,
                                 axisLine: {
                                     show: false
                                 },
@@ -458,85 +498,204 @@
                                 }
                             }],
                             series: [{
-                                    name: '条',
-                                    type: 'bar',
-                                    data: [70, 34, 60, 78, 69],
-                                    itemStyle: {
-                                        barBorderRadius: 20,
-                                        color: function(params) {
-                                            return myColor[params.dataIndex];
-                                        }
-                                    },
-                                    barCategoryGap: 50,
-                                    barWidth: 10,
-                                    yAxisIndex: 0,
-                                    label: {
-                                        show: true,
-                                        position: "inside",
-                                        formatter: "{c}%"
+                                name: '条',
+                                type: 'bar',
+                                data: data21Percent,
+                                // data: [70, 34, 60, 78, 69],
+                                itemStyle: {
+                                    barBorderRadius: 20,
+                                    color: function(params) {
+                                        return myColor[params.dataIndex];
                                     }
                                 },
-
-                                {
-                                    name: '框',
-                                    type: 'bar',
-                                    data: [100, 100, 100, 100, 100],
-                                    barCategoryGap: 50,
-                                    barWidth: 14,
-                                    yAxisIndex: 1,
-                                    itemStyle: {
-                                        color: "none",
-                                        borderColor: "#00c1de",
-                                        borderWidth: 2,
-                                        barBorderRadius: 15
-                                    }
+                                barCategoryGap: 50,
+                                barWidth: 10,
+                                yAxisIndex: 0,
+                                label: {
+                                    show: true,
+                                    position: "inside",
+                                    formatter: "{c}%"
                                 }
-                            ]
-                        };
-
-                        myChart.setOption(option);
-                        window.addEventListener('resize', function() {
-                            myChart.resize();
+                            }, {
+                                name: '框',
+                                type: 'bar',
+                                data: [100, 100, 100, 100, 100],
+                                barCategoryGap: 50,
+                                barWidth: 14,
+                                yAxisIndex: 1,
+                                itemStyle: {
+                                    color: "none",
+                                    borderColor: "#00c1de",
+                                    borderWidth: 2,
+                                    barBorderRadius: 15
+                                }
+                            }]
                         });
-                        // 5.点击切换2019 和 2020 的数据
-                        $('.bar1 h2 a').on('click', function() {
-                            // console.log($(this).index());
-                            // 点击a 之后 根据当前a的索引号 找到对应的 yearData 相关对象
-                            // console.log(yearData[$(this).index()]);
-                            var obj = yearData[$(this).index()];
-                            option.series[0].data = obj.data[0];
-                            /*option.series[1].data = obj.data[1];*/
-                            // 选中年份高亮
-                            $('.bar1 h2 a').removeClass('a-active');
-                            $(this).addClass('a-active');
+                    }
+                </script>
+                <div class="chart" id="chart21"></div>
+                <script>
+                    var chart21 = echarts.init(document.getElementById("chart21"));
+                    // 年份对应数据
+                    var yearData = [{
+                        year: "2019", // 年份
+                        data: [
+                            [70, 34, 60, 78, 69]
+                        ]
+                    }, {
+                        year: "2020", // 年份
+                        data: [
+                            [65, 40, 56, 80, 72]
+                        ]
+                    }];
+                    // 声明颜色数组
+                    var myColor = ["#1089E7", "#F57474", "#56D0E3", "#F8B448", "#8B78F6"];
+                    var option = {
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
+                        grid: {
+                            top: '0%',
+                            left: '22%',
+                            bottom: '10%',
+                            /*containLabel: true*/
+                        },
+                        xAxis: {
+                            show: false
+                        },
+                        yAxis: [{
+                            type: 'category',
+                            data: ['栖霞区', '玄武区', '秦淮区', '鼓楼区', '江宁区'],
+                            axisLine: {
+                                show: false
+                            },
+                            axisTick: {
+                                show: false
+                            },
+                            axisLabel: {
+                                color: "#fff"
+                            }
+                        }, {
+                            type: 'category',
+                            // data: [702, 350, 610, 793, 664],
+                            data: data21Total,
+                            axisLine: {
+                                show: false
+                            },
+                            axisTick: {
+                                show: false
+                            },
+                            axisLabel: {
+                                color: "#fff"
+                            }
+                        }],
+                        series: [{
+                                name: '条',
+                                type: 'bar',
+                                // data: [70, 34, 60, 78, 69],
+                                data: data21Percent,
+                                itemStyle: {
+                                    barBorderRadius: 20,
+                                    color: function(params) {
+                                        return myColor[params.dataIndex];
+                                    }
+                                },
+                                barCategoryGap: 50,
+                                barWidth: 10,
+                                yAxisIndex: 0,
+                                label: {
+                                    show: true,
+                                    position: "inside",
+                                    formatter: "{c}%"
+                                }
+                            },
 
-                            // 需要重新渲染
-                            myChart.setOption(option);
-                        })
-                    })();
+                            {
+                                name: '框',
+                                type: 'bar',
+                                data: [100, 100, 100, 100, 100],
+                                barCategoryGap: 50,
+                                barWidth: 14,
+                                yAxisIndex: 1,
+                                itemStyle: {
+                                    color: "none",
+                                    borderColor: "#00c1de",
+                                    borderWidth: 2,
+                                    barBorderRadius: 15
+                                }
+                            }
+                        ]
+                    };
+
+                    chart21.setOption(option);
+                    window.addEventListener('resize', function() {
+                        chart21.resize();
+                    });
+                    // 5.点击切换2019 和 2020 的数据
+                    $('.bar1 h2 a').on('click', function() {
+                        // console.log($(this).index());
+                        // 点击a 之后 根据当前a的索引号 找到对应的 yearData 相关对象
+                        // console.log(yearData[$(this).index()]);
+                        var obj = yearData[$(this).index()];
+                        option.series[0].data = obj.data[0];
+                        /*option.series[1].data = obj.data[1];*/
+                        // 选中年份高亮
+                        $('.bar1 h2 a').removeClass('a-active');
+                        $(this).addClass('a-active');
+
+                        // 需要重新渲染
+                        chart21.setOption(option);
+                    })
                 </script>
             </div>
             <div class="panel pie">
                 <h2>人口分类图</h2>
-                <div class="chart" id="chart31"></div>
+                <button onclick="f31()">
+                    <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
                 <script>
-                    (function() {
-                        var myChart = echarts.init(document.getElementById("chart31"));
-                        var option = {
-                            color: ["#1089E7", "#F57474", "#56D0E3"],
-                            tooltip: {
-                                trigger: 'item',
-                                formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    var data31 = new Array();
+                    data31.push({
+                        value: 7,
+                        name: '常住人口'
+                    });
+                    data31.push({
+                        value: 2.5,
+                        name: '流动人口'
+                    });
+                    data31.push({
+                        value: 0.5,
+                        name: '其他'
+                    });
+
+                    function f31() {
+                        $.ajax({
+                            method: "post",
+                            url: "/refresh31/",
+                            dataType: "json",
+                            data: {
+                                myString: "hello"
                             },
-                            legend: {
-                                bottom: '0%',
-                                itemWidth: 10,
-                                itemHeight: 10,
-                                textStyle: {
-                                    color: "rgba(255, 255, 255, 0.5)",
-                                    fontSize: "12"
-                                }
-                            },
+                            success: function(data) {
+                                console.log(data.message);
+                                refresh_data31(data.message);
+                            }
+                        });
+                    }
+
+                    function refresh_data31(data) {
+                        data31 = [];
+                        for (idx in data) {
+                            console.log(data[idx][0] + " " + data[idx][1]);
+                            data31.push({
+                                name: data[idx][0],
+                                value: data[idx][1],
+                            });
+                        }
+                        chart31.setOption({
                             series: [{
                                 name: '人口分类',
                                 type: 'pie',
@@ -557,23 +716,66 @@
                                 labelLine: {
                                     show: false
                                 },
-                                data: [{
-                                    value: 7,
-                                    name: "常住人口"
-                                }, {
-                                    value: 2.5,
-                                    name: "流动人口"
-                                }, {
-                                    value: 0.5,
-                                    name: "其他"
-                                }]
+                                data: data31
                             }]
-                        };
-                        myChart.setOption(option);
-                        window.addEventListener('resize', function() {
-                            myChart.resize();
                         });
-                    })();
+                    }
+                </script>
+                <div class="chart" id="chart31"></div>
+                <script>
+                    var chart31 = echarts.init(document.getElementById("chart31"));
+                    var option = {
+                        color: ["#1089E7", "#F57474", "#56D0E3"],
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: '{a} <br/>{b}: {c} ({d}%)'
+                        },
+                        legend: {
+                            bottom: '0%',
+                            itemWidth: 10,
+                            itemHeight: 10,
+                            textStyle: {
+                                color: "rgba(255, 255, 255, 0.5)",
+                                fontSize: "12"
+                            }
+                        },
+                        series: [{
+                            name: '人口分类',
+                            type: 'pie',
+                            radius: ['40%', '60%'],
+                            center: ['50%', '35%'],
+                            avoidLabelOverlap: false,
+                            label: {
+                                show: false,
+                                // position: 'center'
+                            },
+                            emphasis: {
+                                label: {
+                                    show: false,
+                                    fontSize: '10',
+                                    fontWeight: 'bold'
+                                }
+                            },
+                            labelLine: {
+                                show: false
+                            },
+                            // data: [{
+                            //     value: 7,
+                            //     name: "常住人口"
+                            // }, {
+                            //     value: 2.5,
+                            //     name: "流动人口"
+                            // }, {
+                            //     value: 0.5,
+                            //     name: "其他"
+                            // }]
+                            data: data31
+                        }]
+                    };
+                    chart31.setOption(option);
+                    window.addEventListener('resize', function() {
+                        chart31.resize();
+                    });
                 </script>
             </div>
         </div>
@@ -600,7 +802,9 @@
                 <div class="map2"></div>
                 <div class="map3"></div>
                 <div class="chart" id="chart12">
+
                 </div>
+
                 <script>
                     //定义初始经纬度
                     var mylgt = 119.111284;
@@ -612,85 +816,58 @@
                         zoom: 13 //地图显示的缩放级别
                     });
                 </script>
+                <button onclick="to_map_page()">
+                    <span class="glyphicon glyphicon-fullscreen"></span>
+                </button>
+
+                <script>
+                    function to_map_page() {
+                        window.open("map");
+                    }
+                </script>
             </div>
         </div>
         <div class="column">
             <div class="panel bar">
                 <h2>垃圾变化总量</h2>
-                <div class="chart" id="chart13">图表</div>
+                <button onclick="f13()">
+                    <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
                 <script>
-                    (function() {
-                        var myChart = echarts.init(document.getElementById("chart13"));
-                        var option = {
-                            tooltip: {
-                                trigger: 'axis',
-                                axisPointer: {
-                                    type: 'cross',
-                                    label: {
-                                        backgroundColor: '#6a7985'
-                                    }
-                                }
+                    var data13Pre = [50, 60, 70, 80, 90, 100, 110];
+                    var data13Rel = [60, 70, 80, 90, 100, 110, 120];
+
+                    function f13() {
+                        $.ajax({
+                            method: "post",
+                            url: "/refresh13/",
+                            dataType: "json",
+                            data: {
+                                myString: "hello"
                             },
-                            legend: {
-                                top: "0",
-                                textStyle: {
-                                    color: "rgba(255, 255, 255, 0.5)",
-                                    fontSize: "12"
-                                }
-                            },
-                            grid: {
-                                left: '3%',
-                                right: '4%',
-                                bottom: '0%',
-                                top: '30%',
-                                containLabel: true
-                            },
-                            xAxis: [{
-                                type: 'category',
-                                boundaryGap: false,
-                                data: ['2014', '2015', '2016', '2017', '2018', '2019', '2020'],
-                                axisLabel: {
-                                    textStyle: {
-                                        color: "rgba(255, 255, 255, 0.6)",
-                                        fontSize: "12"
-                                    }
-                                },
-                                axisLine: {
-                                    lineStyle: {
-                                        color: "rgba(255,255,255,.2)"
-                                    }
-                                }
-                            }],
-                            yAxis: [{
-                                type: 'value',
-                                axisTick: {
-                                    // 不显示刻度线
-                                    show: false
-                                },
-                                axisLine: {
-                                    lineStyle: {
-                                        color: "rgba(255,255,255,.1)"
-                                    }
-                                },
-                                axisLabel: {
-                                    textStyle: {
-                                        color: "rgba(255,255,255,.6)",
-                                        fontSize: 12
-                                    }
-                                },
-                                // 修改分割线的颜色
-                                splitLine: {
-                                    lineStyle: {
-                                        color: "rgba(255,255,255,.1)"
-                                    }
-                                }
-                            }],
+                            success: function(data) {
+                                console.log(data.message);
+                                refresh_data13(data.message);
+                            }
+                        });
+                    }
+
+                    function refresh_data13(data) {
+                        data13Pre = [];
+                        data13Rel = [];
+                        for (idx in data) {
+                            console.log(data[idx][1] + " " + data[idx][2]);
+                            data13Pre.push(data[idx][1]);
+                            data13Rel.push(data[idx][2]);
+                        }
+                        chart13.setOption({
                             series: [{
                                 name: '预测值',
                                 type: 'line',
                                 areaStyle: {},
                                 smooth: true,
-                                data: [30, 40, 30, 40, 30, 40, 30, 60, 20, 40, 30, 40, 30, 40, 30, 40, 30, 60, 20, 40, 30, 40, 30, 40, 30, 40, 20, 60, 50, 40],
+                                data: data13Pre,
+                                // data: [30, 40, 30, 40, 30, 40, 30, 60, 20, 40, 30, 40, 30, 40, 30, 40, 30, 60, 20, 40, 30, 40, 30, 40, 30, 40, 20, 60, 50, 40],
                                 // 单独修改当前线条的样式
                                 lineStyle: {
                                     color: "#0184d5",
@@ -765,14 +942,169 @@
                                 },
                                 // 开始不显示拐点， 鼠标经过显示
                                 showSymbol: false,
-                                data: [130, 10, 20, 40, 30, 40, 80, 60, 20, 40, 90, 40, 20, 140, 30, 40, 130, 20, 20, 40, 80, 70, 30, 40, 30, 120, 20, 99, 50, 20],
+                                data: data13Rel
+                                    // data: [130, 10, 20, 40, 30, 40, 80, 60, 20, 40, 90, 40, 20, 140, 30, 40, 130, 20, 20, 40, 80, 70, 30, 40, 30, 120, 20, 99, 50, 20],
                             }]
-                        };
-                        myChart.setOption(option);
-                        window.addEventListener('resize', function() {
-                            myChart.resize();
                         });
-                    })();
+                    }
+                </script>
+
+                <div class="chart" id="chart13">图表</div>
+                <script>
+                    var chart13 = echarts.init(document.getElementById("chart13"));
+                    var option = {
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'cross',
+                                label: {
+                                    backgroundColor: '#6a7985'
+                                }
+                            }
+                        },
+                        legend: {
+                            top: "0",
+                            textStyle: {
+                                color: "rgba(255, 255, 255, 0.5)",
+                                fontSize: "12"
+                            }
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '0%',
+                            top: '30%',
+                            containLabel: true
+                        },
+                        xAxis: [{
+                            type: 'category',
+                            boundaryGap: false,
+                            data: ['2014', '2015', '2016', '2017', '2018', '2019', '2020'],
+                            axisLabel: {
+                                textStyle: {
+                                    color: "rgba(255, 255, 255, 0.6)",
+                                    fontSize: "12"
+                                }
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: "rgba(255,255,255,.2)"
+                                }
+                            }
+                        }],
+                        yAxis: [{
+                            type: 'value',
+                            axisTick: {
+                                // 不显示刻度线
+                                show: false
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: "rgba(255,255,255,.1)"
+                                }
+                            },
+                            axisLabel: {
+                                textStyle: {
+                                    color: "rgba(255,255,255,.6)",
+                                    fontSize: 12
+                                }
+                            },
+                            // 修改分割线的颜色
+                            splitLine: {
+                                lineStyle: {
+                                    color: "rgba(255,255,255,.1)"
+                                }
+                            }
+                        }],
+                        series: [{
+                            name: '预测值',
+                            type: 'line',
+                            areaStyle: {},
+                            smooth: true,
+                            data: data13Pre,
+                            // data: [30, 40, 30, 40, 30, 40, 30, 60, 20, 40, 30, 40, 30, 40, 30, 40, 30, 60, 20, 40, 30, 40, 30, 40, 30, 40, 20, 60, 50, 40],
+                            // 单独修改当前线条的样式
+                            lineStyle: {
+                                color: "#0184d5",
+                                width: 2
+                            },
+                            // 填充区域渐变透明颜色
+                            areaStyle: {
+                                color: new echarts.graphic.LinearGradient(
+                                    0,
+                                    0,
+                                    0,
+                                    1, [{
+                                        offset: 0,
+                                        color: "rgba(1, 132, 213, 0.4)" // 渐变色的起始颜色
+                                    }, {
+                                        offset: 0.8,
+                                        color: "rgba(1, 132, 213, 0.1)" // 渐变线的结束颜色
+                                    }],
+                                    false
+                                ),
+                                shadowColor: "rgba(0, 0, 0, 0.1)"
+                            },
+                            // 拐点设置为小圆点
+                            symbol: 'circle',
+                            // 设置拐点大小
+                            symbolSize: 5,
+                            // 开始不显示拐点， 鼠标经过显示
+                            showSymbol: false,
+                            // 设置拐点颜色以及边框
+                            itemStyle: {
+                                color: "#0184d5",
+                                borderColor: "rgba(221, 220, 107, .1)",
+                                borderWidth: 12
+                            }
+                        }, {
+                            name: "真实值",
+                            type: "line",
+                            smooth: true,
+                            lineStyle: {
+                                normal: {
+                                    color: "#00d887",
+                                    width: 2
+                                }
+                            },
+                            areaStyle: {
+                                normal: {
+                                    color: new echarts.graphic.LinearGradient(
+                                        0,
+                                        0,
+                                        0,
+                                        1, [{
+                                            offset: 0,
+                                            color: "rgba(0, 216, 135, 0.4)"
+                                        }, {
+                                            offset: 0.8,
+                                            color: "rgba(0, 216, 135, 0.1)"
+                                        }],
+                                        false
+                                    ),
+                                    shadowColor: "rgba(0, 0, 0, 0.1)"
+                                }
+                            },
+                            // 设置拐点 小圆点
+                            symbol: "circle",
+                            // 拐点大小
+                            symbolSize: 5,
+                            // 设置拐点颜色以及边框
+                            itemStyle: {
+                                color: "#00d887",
+                                borderColor: "rgba(221, 220, 107, .1)",
+                                borderWidth: 12
+                            },
+                            // 开始不显示拐点， 鼠标经过显示
+                            showSymbol: false,
+                            data: data13Rel
+                                // data: [130, 10, 20, 40, 30, 40, 80, 60, 20, 40, 90, 40, 20, 140, 30, 40, 130, 20, 20, 40, 80, 70, 30, 40, 30, 120, 20, 99, 50, 20],
+                        }]
+                    };
+                    chart13.setOption(option);
+                    window.addEventListener('resize', function() {
+                        chart13.resize();
+                    });
                 </script>
             </div>
             <div class="panel bar2">
@@ -780,40 +1112,37 @@
                     <a class="a-active" href="javascript:;">2019</a>
                     <a href="javascript:;">2020</a>
                 </h2>
-                <div class="chart" id="chart23"></div>
+                <button onclick="f23()">
+                    <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
                 <script>
-                    (function() {
-                        var myChart = echarts.init(document.getElementById("chart23"));
-                        // 年份对应数据
-                        var yearData = [{
-                            year: "2019", // 年份
-                            data: [
-                                [70, 34, 60, 78, 69]
-                            ]
-                        }, {
-                            year: "2020", // 年份
-                            data: [
-                                [65, 40, 56, 80, 72]
-                            ]
-                        }];
-                        // 声明颜色数组
-                        var myColor = ["#1089E7", "#F57474", "#56D0E3", "#F8B448", "#8B78F6"];
-                        var option = {
-                            tooltip: {
-                                trigger: 'axis',
-                                axisPointer: {
-                                    type: 'shadow'
-                                }
+                    var data23Percent = [70, 34, 60, 78, 69];
+                    var data23Total = [702, 350, 610, 793, 664];
+
+                    function f23() {
+                        $.ajax({
+                            method: "post",
+                            url: "/refresh23/",
+                            dataType: "json",
+                            data: {
+                                myString: "hello"
                             },
-                            grid: {
-                                top: '0%',
-                                left: '22%',
-                                bottom: '10%',
-                                /*containLabel: true*/
-                            },
-                            xAxis: {
-                                show: false
-                            },
+                            success: function(data) {
+                                console.log(data.message);
+                                refresh_data23(data.message);
+                            }
+                        });
+                    }
+
+                    function refresh_data23(data) {
+                        data23Percent = [];
+                        data23Total = [];
+                        for (idx in data) {
+                            console.log(data[idx][0] + " " + data[idx][1]);
+                            data23Percent.push(data[idx][0]);
+                            data23Total.push(data[idx][1]);
+                        }
+                        chart23.setOption({
                             yAxis: [{
                                 type: 'category',
                                 data: ['栖霞区', '玄武区', '秦淮区', '鼓楼区', '江宁区'],
@@ -828,7 +1157,8 @@
                                 }
                             }, {
                                 type: 'category',
-                                data: ['35', '30', '60', '50', '30'],
+                                // data: [702, 350, 610, 793, 664],
+                                data: data23Total,
                                 axisLine: {
                                     show: false
                                 },
@@ -842,7 +1172,8 @@
                             series: [{
                                 name: '条',
                                 type: 'bar',
-                                data: [70, 34, 60, 78, 69],
+                                data: data23Percent,
+                                // data: [70, 34, 60, 78, 69],
                                 itemStyle: {
                                     barBorderRadius: 20,
                                     color: function(params) {
@@ -871,42 +1202,174 @@
                                     barBorderRadius: 15
                                 }
                             }]
-                        };
-                        myChart.setOption(option);
-                        window.addEventListener('resize', function() {
-                            myChart.resize();
                         });
+                    }
+                </script>
+                <div class="chart" id="chart23"></div>
+                <script>
+                    var chart23 = echarts.init(document.getElementById("chart23"));
+                    // 年份对应数据
+                    var yearData = [{
+                        year: "2019", // 年份
+                        data: [
+                            [70, 34, 60, 78, 69]
+                        ]
+                    }, {
+                        year: "2020", // 年份
+                        data: [
+                            [65, 40, 56, 80, 72]
+                        ]
+                    }];
+                    // 声明颜色数组
+                    var myColor = ["#1089E7", "#F57474", "#56D0E3", "#F8B448", "#8B78F6"];
+                    var option = {
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
+                        grid: {
+                            top: '0%',
+                            left: '22%',
+                            bottom: '10%',
+                            /*containLabel: true*/
+                        },
+                        xAxis: {
+                            show: false
+                        },
+                        yAxis: [{
+                            type: 'category',
+                            data: ['栖霞区', '玄武区', '秦淮区', '鼓楼区', '江宁区'],
+                            axisLine: {
+                                show: false
+                            },
+                            axisTick: {
+                                show: false
+                            },
+                            axisLabel: {
+                                color: "#fff"
+                            }
+                        }, {
+                            type: 'category',
+                            // data: ['35', '30', '60', '50', '30'],
+                            data: data23Total,
+                            axisLine: {
+                                show: false
+                            },
+                            axisTick: {
+                                show: false
+                            },
+                            axisLabel: {
+                                color: "#fff"
+                            }
+                        }],
+                        series: [{
+                            name: '条',
+                            type: 'bar',
+                            // data: [70, 34, 60, 78, 69],
+                            data: data23Percent,
+                            itemStyle: {
+                                barBorderRadius: 20,
+                                color: function(params) {
+                                    return myColor[params.dataIndex];
+                                }
+                            },
+                            barCategoryGap: 50,
+                            barWidth: 10,
+                            yAxisIndex: 0,
+                            label: {
+                                show: true,
+                                position: "inside",
+                                formatter: "{c}%"
+                            }
+                        }, {
+                            name: '框',
+                            type: 'bar',
+                            data: [100, 100, 100, 100, 100],
+                            barCategoryGap: 50,
+                            barWidth: 14,
+                            yAxisIndex: 1,
+                            itemStyle: {
+                                color: "none",
+                                borderColor: "#00c1de",
+                                borderWidth: 2,
+                                barBorderRadius: 15
+                            }
+                        }]
+                    };
+                    chart23.setOption(option);
+                    window.addEventListener('resize', function() {
+                        chart23.resize();
+                    });
 
-                        // 5.点击切换2019 和 2020 的数据
-                        $('.bar2 h2 a').on('click', function() {
-                            // console.log($(this).index());
-                            // 点击a 之后 根据当前a的索引号 找到对应的 yearData 相关对象
-                            // console.log(yearData[$(this).index()]);
-                            var obj = yearData[$(this).index()];
-                            option.series[0].data = obj.data[0];
-                            /*option.series[1].data = obj.data[1];*/
-                            // 选中年份高亮
-                            $('.bar2 h2 a').removeClass('a-active');
-                            $(this).addClass('a-active');
+                    // 5.点击切换2019 和 2020 的数据
+                    $('.bar2 h2 a').on('click', function() {
+                        // console.log($(this).index());
+                        // 点击a 之后 根据当前a的索引号 找到对应的 yearData 相关对象
+                        // console.log(yearData[$(this).index()]);
+                        var obj = yearData[$(this).index()];
+                        option.series[0].data = obj.data[0];
+                        /*option.series[1].data = obj.data[1];*/
+                        // 选中年份高亮
+                        $('.bar2 h2 a').removeClass('a-active');
+                        $(this).addClass('a-active');
 
-                            // 需要重新渲染
-                            myChart.setOption(option);
-                        })
-                    })();
+                        // 需要重新渲染
+                        chart23.setOption(option);
+                    })
                 </script>
             </div>
+
             <div class="panel pie">
                 <h2>垃圾分类图</h2>
-                <div class="chart" id="chart33"></div>
+                <button onclick="f33()">
+                    <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
                 <script>
-                    (function() {
-                        var myChart = echarts.init(document.getElementById("chart33"));
-                        var option = {
-                            color: ['#60cda0', '#ed8884', '#ff9f7f', '#0096ff'],
-                            tooltip: {
-                                trigger: 'item',
-                                formatter: '{a} <br/>{b} : {c} ({d}%)'
+                    var data33 = new Array();
+                    data33.push({
+                        value: 30,
+                        name: '干垃圾'
+                    });
+                    data33.push({
+                        value: 30,
+                        name: '湿垃圾'
+                    });
+                    data33.push({
+                        value: 20,
+                        name: '可回收物'
+                    });
+                    data33.push({
+                        value: 20,
+                        name: '有害垃圾'
+                    });
+
+                    function f33() {
+                        $.ajax({
+                            method: "post",
+                            url: "/refresh33/",
+                            dataType: "json",
+                            data: {
+                                myString: "hello"
                             },
+                            success: function(data) {
+                                console.log(data.message);
+                                refresh_data33(data.message);
+                            }
+                        });
+                    }
+
+                    function refresh_data33(data) {
+                        data33 = [];
+                        for (idx in data) {
+                            console.log(data[idx][0] + " " + data[idx][1]);
+                            data33.push({
+                                name: data[idx][0],
+                                value: data[idx][1],
+                            });
+                        }
+                        chart33.setOption({
                             legend: {
                                 bottom: "0%",
                                 itemWidth: 10,
@@ -914,7 +1377,7 @@
                                 textStyle: {
                                     color: "rgba(255, 255, 255, 0.5)",
                                     fontSize: "12"
-                                }
+                                },
                             },
                             series: [{
                                 name: '垃圾分类',
@@ -929,26 +1392,61 @@
                                     length: 6,
                                     length2: 8
                                 },
-                                data: [{
-                                    value: 30,
-                                    name: '干垃圾'
-                                }, {
-                                    value: 30,
-                                    name: '湿垃圾'
-                                }, {
-                                    value: 20,
-                                    name: '可回收物'
-                                }, {
-                                    value: 20,
-                                    name: '有害垃圾'
-                                }]
+                                data: data33
                             }]
-                        };
-                        myChart.setOption(option);
-                        window.addEventListener('resize', function() {
-                            myChart.resize();
                         });
-                    })();
+                    }
+                </script>
+                <div class="chart" id="chart33"></div>
+                <script>
+                    var chart33 = echarts.init(document.getElementById("chart33"));
+                    var option = {
+                        color: ['#60cda0', '#ed8884', '#ff9f7f', '#0096ff'],
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: '{a} <br/>{b} : {c} ({d}%)'
+                        },
+                        legend: {
+                            bottom: "0%",
+                            itemWidth: 10,
+                            itemHeight: 10,
+                            textStyle: {
+                                color: "rgba(255, 255, 255, 0.5)",
+                                fontSize: "12"
+                            }
+                        },
+                        series: [{
+                            name: '垃圾分类',
+                            type: 'pie',
+                            radius: ['10%', '70%'],
+                            center: ['50%', '35%'],
+                            roseType: 'radius',
+                            label: {
+                                fontSize: 10
+                            },
+                            labelLine: {
+                                length: 6,
+                                length2: 8
+                            },
+                            data: [{
+                                value: 30,
+                                name: '干垃圾'
+                            }, {
+                                value: 30,
+                                name: '湿垃圾'
+                            }, {
+                                value: 20,
+                                name: '可回收物'
+                            }, {
+                                value: 20,
+                                name: '有害垃圾'
+                            }]
+                        }]
+                    };
+                    chart33.setOption(option);
+                    window.addEventListener('resize', function() {
+                        chart33.resize();
+                    });
                 </script>
             </div>
         </div>
